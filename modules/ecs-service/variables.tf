@@ -26,3 +26,8 @@ variable "security_groups" {
   type        = list(string)
   description = "security group ids"
 }
+
+variable "env" {
+  type = map(string)
+  description = "task def env variables"
+}

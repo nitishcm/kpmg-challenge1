@@ -1,5 +1,5 @@
 module "network" {
-  source         = "modules/network"
+  source         = "./modules/network"
   vpc_cidr_block = "10.0.0.0/16"
   subnet_cidr = {
     app1_subnet    = "10.1.0.0/24",
@@ -12,17 +12,19 @@ module "network" {
 }
 
 module "ecs_cluster" {
-  source       = "modules/ecs-cluster"
+  source       = "./modules/ecs-cluster"
   cluster_name = "test"
 }
 
 module "ecs_service" {
-  source          = "modules/ecs-service"
+  source          = "./modules/ecs-service"
   cluster_arn     = module.ecs_cluster.cluster_arn
   security_groups = [""]
   service_name    = "test-service"
   subnets         = [module.network.pvt_app1_subnet, module.network.pvt_app2_subnet]
   task_definition = "task-definition/task-definition.tpl"
-
+  env = {
+    docker_image_url = ""
+  }
 }
 
